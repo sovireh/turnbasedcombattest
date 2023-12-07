@@ -1,0 +1,22 @@
+Sistema de turnos
+	Siempre empieza el jugador
+	Solo puedo atacar o curarme o realizar cualquier accion cuando es mi turno y ninguno de los dos esta muerto
+	Termina el turno si:
+		- Ataco
+		- Me curo
+
+if Mivida > 0 y Suvida > 0 y es mi turno:
+	si tecla-tocada = A:
+		atacar
+		terminar turno
+	elif tecla-tocada = B:
+		defender
+		terminar turno
+	elif telca-tocada = C:
+		curar
+		terminar turno
+elif Mivida > 0 y Suvida > 0 y no es mi turno:
+	comportamiento del enemigo
+else:
+	pasar a siguiente combate
+

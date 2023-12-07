@@ -2,6 +2,8 @@ import pygame as pg
 import sys
 import os
 
+pg.init()
+
 # window config
 win_width, win_height = 600,400
 window = pg.display.set_mode((win_width, win_height))
@@ -17,7 +19,17 @@ dir_actual = os.path.dirname(os.path.abspath(__file__))
 ruta_sprite_jugador = os.path.join(dir_actual, "sprites", "playerSprite.png")
 ruta_boton_ataque = os.path.join(dir_actual, "sprites", "attackbuttonSprite.png")
 
-class Player(pg.sprite.Sprite):
+# Definir colores
+white = (255, 255, 255)
+black = (0, 0, 0)
+
+class Player():
+    def __init__(self):
+        #Stats
+        self.vida = 100
+        self.ataque = 10
+
+class Monster(pg.sprite.Sprite):
     def __init__(self):
         super().__init__()
         # Cargar sprite
@@ -27,7 +39,6 @@ class Player(pg.sprite.Sprite):
         # Configurar la posición inicial del sprite
         self.rect.x = 100
         self.rect.y = 100
-
 
         # Stats
         self.vida = 100
@@ -43,27 +54,54 @@ class Button(pg.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
+# Inicializar la fuente
+font = pg.font.Font(None, 36)
+
+# Funcion para mostrar texto
+def displayText(text, x, y):
+    rendered_text = font.render(text, True, black)
+    window.blit(rendered_text,(x,y))
+
 # Crear un grupo de sprites
 Sprites = pg.sprite.Group()
 
 # Crear un objeto tipo player
-newplayer = Player()
+newPlayer = Player()
+# Crear un objeto monster
+newMonster = Monster()
 # Objeto boton
 attackButton = Button(ruta_boton_ataque, 200, 200)
 
 # Agregar mi objeto al grupo de sprites
-Sprites.add(newplayer)
+Sprites.add(newMonster)
 Sprites.add(attackButton)
+
+esMiTurno = True
+
+#sistema turnos
+#def turnos():
+ #   if(esMiTurno && newMonster.vida > 0 && newPlayer.vida >0):
+
 
 while True:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             pg.quit()
             sys.exit()
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_a:
+                newMonster.vida -= 1
+
+
+    #Obtener valor de vida del personaje
+    vidaMonster = newMonster.vida
+    vidaPlayer = newPlayer.vida
 
     # Dibujar en la pantalla
-    window.fill((255,255,255))
+    window.fill((white))
     Sprites.draw(window)
+    displayText(f"Vida Enem.: {vidaMonster}", 10, 10)
+    displayText(f"Vida: {vidaPlayer}", 300,10)
 
     # Actualizar pantalla
     pg.display.flip()
