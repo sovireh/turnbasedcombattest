@@ -15,6 +15,7 @@ dir_actual = os.path.dirname(os.path.abspath(__file__))
 
 # Ruta relativa a la carpeta de imágenes
 ruta_sprite_jugador = os.path.join(dir_actual, "sprites", "playerSprite.png")
+ruta_boton_ataque = os.path.join(dir_actual, "sprites", "attackbuttonSprite.png")
 
 class Player(pg.sprite.Sprite):
     def __init__(self):
@@ -36,19 +37,23 @@ class Button(pg.sprite.Sprite):
     def __init__(self, spriteDir, x,y):
         super().__init__()
         # Cargar sprite
-        self.x = x
-        self.y = y
         self.spriteDir = spriteDir
         self.image = pg.image.load(self.spriteDir)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
 
 # Crear un grupo de sprites
 Sprites = pg.sprite.Group()
 
 # Crear un objeto tipo player
 newplayer = Player()
+# Objeto boton
+attackButton = Button(ruta_boton_ataque, 200, 200)
 
 # Agregar mi objeto al grupo de sprites
 Sprites.add(newplayer)
+Sprites.add(attackButton)
 
 while True:
     for event in pg.event.get():
