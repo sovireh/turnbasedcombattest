@@ -1,6 +1,7 @@
 import pygame as pg
 import sys
 import os
+import time
 
 pg.init()
 
@@ -42,7 +43,7 @@ class Monster(pg.sprite.Sprite):
 
         # Stats
         self.vida = 100
-        self.ataque = 10
+        self.ataque = 5
 
 class Button(pg.sprite.Sprite):
     def __init__(self, spriteDir, x,y):
@@ -79,19 +80,30 @@ Sprites.add(attackButton)
 esMiTurno = True
 
 #sistema turnos
-#def turnos():
- #   if(esMiTurno && newMonster.vida > 0 && newPlayer.vida >0):
-
+def turnos():
+    global esMiTurno
+    if((esMiTurno == True) & (newMonster.vida > 0) & (newPlayer.vida > 0)):
+        print("Es mi turno")
+        print(str(esMiTurno) + str(newMonster.vida) + str(newPlayer.vida))
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_a:
+                newMonster.vida -= newPlayer.ataque   
+                esMiTurno = False
+    elif((esMiTurno == False) & (newMonster.vida > 0) & (newPlayer.vida > 0)):
+        print("Es turno del monstruo")
+        print(str(esMiTurno) + str(newMonster.vida) + str(newPlayer.vida))
+        newPlayer.vida -= newMonster.ataque
+        esMiTurno = True
+    else:
+        print("Terminó la pelea")
+        print(str(esMiTurno) + str(newMonster.vida) + str(newPlayer.vida))
 
 while True:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             pg.quit()
             sys.exit()
-        if event.type == pg.KEYDOWN:
-            if event.key == pg.K_a:
-                newMonster.vida -= 1
-
+        turnos()
 
     #Obtener valor de vida del personaje
     vidaMonster = newMonster.vida
@@ -102,6 +114,5 @@ while True:
     Sprites.draw(window)
     displayText(f"Vida Enem.: {vidaMonster}", 10, 10)
     displayText(f"Vida: {vidaPlayer}", 300,10)
-
     # Actualizar pantalla
     pg.display.flip()
